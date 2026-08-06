@@ -1,0 +1,12 @@
+# Dependances principales
+openai>=1.30.0
+python-dotenv>=1.0.0
+typing-extensions>=4.10.0
+
+# Tests
+pytest>=8.0.0
+pytest-asyncio>=0.23.0
+
+# Qualite de code (optionnel en dev)
+# ruff>=0.4.0
+# mypy>=1.10.0
