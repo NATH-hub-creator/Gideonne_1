@@ -1,0 +1,69 @@
+/* index.css — Styles globaux Gideonne — Mode sombre, Windows 11 */
+:root {
+  --couleur-fond: #1a1a2e; --couleur-fond-secondaire: #16213e; --couleur-fond-tertiaire: #0f3460;
+  --couleur-accent: #e94560; --couleur-texte: #e0e0e0; --couleur-texte-secondaire: #a0a0b0;
+  --couleur-bordure: #2a2a4a; --police: "Segoe UI", "Inter", system-ui, sans-serif;
+  --taille-texte-base: 14px; --espace-sm: 8px; --espace-md: 16px; --espace-lg: 24px;
+  --rayon-sm: 4px; --rayon-md: 8px; --transition-rapide: 0.15s ease;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; width: 100%; overflow: hidden; }
+body { font-family: var(--police); font-size: var(--taille-texte-base); background-color: var(--couleur-fond); color: var(--couleur-texte); -webkit-font-smoothing: antialiased; user-select: none; }
+#root { height: 100%; display: flex; flex-direction: column; }
+.app-container { display: flex; height: 100vh; overflow: hidden; }
+.main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: var(--couleur-fond-secondaire); } ::-webkit-scrollbar-thumb { background: var(--couleur-bordure); border-radius: 3px; }
+button { cursor: pointer; border: none; font-family: var(--police); font-size: var(--taille-texte-base); transition: background-color var(--transition-rapide); }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+input, textarea { font-family: var(--police); font-size: var(--taille-texte-base); background-color: var(--couleur-fond-secondaire); color: var(--couleur-texte); border: 1px solid var(--couleur-bordure); border-radius: var(--rayon-sm); outline: none; }
+input:focus, textarea:focus { border-color: var(--couleur-accent); }
+a { color: var(--couleur-accent); text-decoration: none; } a:hover { text-decoration: underline; }
+.sidebar { width: 240px; background: var(--couleur-fond-secondaire); border-right: 1px solid var(--couleur-bordure); display: flex; flex-direction: column; }
+.sidebar-entete { display: flex; align-items: center; justify-content: space-between; padding: var(--espace-md); border-bottom: 1px solid var(--couleur-bordure); }
+.sidebar-titre { font-size: 18px; font-weight: 700; } .bouton-nouvelle-conv { background: var(--couleur-accent); color: white; width: 28px; height: 28px; border-radius: 50%; font-size: 18px; }
+.conversations-liste { flex: 1; overflow-y: auto; padding: var(--espace-sm); }
+.conversation-item { display: flex; flex-direction: column; width: 100%; text-align: left; padding: var(--espace-sm); border-radius: var(--rayon-sm); background: transparent; color: var(--couleur-texte); margin-bottom: 2px; }
+.conversation-item:hover, .conversation-item--active { background: var(--couleur-fond-tertiaire); }
+.conversation-titre { font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.conversation-date { font-size: 11px; color: var(--couleur-texte-secondaire); margin-top: 2px; }
+.conversations-vides { color: var(--couleur-texte-secondaire); font-size: 12px; padding: var(--espace-sm); text-align: center; }
+.sidebar-pied { padding: var(--espace-sm); border-top: 1px solid var(--couleur-bordure); }
+.bouton-parametres { width: 100%; padding: var(--espace-sm); background: transparent; color: var(--couleur-texte-secondaire); border-radius: var(--rayon-sm); text-align: left; }
+.bouton-parametres:hover { background: var(--couleur-fond-tertiaire); color: var(--couleur-texte); }
+.chat-window { display: flex; flex-direction: column; height: 100%; }
+.messages-liste { flex: 1; overflow-y: auto; padding: var(--espace-lg); display: flex; flex-direction: column; gap: var(--espace-md); }
+.message-accueil { text-align: center; margin: auto; max-width: 400px; }
+.message-accueil h2 { font-size: 24px; margin-bottom: var(--espace-sm); } .message-accueil p { color: var(--couleur-texte-secondaire); }
+.message { max-width: 80%; padding: var(--espace-sm) var(--espace-md); border-radius: var(--rayon-md); }
+.message--user { background: var(--couleur-accent); color: white; align-self: flex-end; }
+.message--assistant { background: var(--couleur-fond-secondaire); align-self: flex-start; }
+.message-role { font-size: 11px; font-weight: 600; margin-bottom: 4px; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.5px; }
+.message-contenu { font-size: 14px; line-height: 1.5; white-space: pre-wrap; }
+.message-heure { font-size: 10px; margin-top: 4px; opacity: 0.5; text-align: right; }
+.saisie-zone { display: flex; gap: var(--espace-sm); padding: var(--espace-md); border-top: 1px solid var(--couleur-bordure); align-items: flex-end; }
+.saisie-texte { flex: 1; padding: var(--espace-sm) var(--espace-md); resize: none; border-radius: var(--rayon-md); max-height: 120px; }
+.bouton-envoyer { background: var(--couleur-accent); color: white; padding: var(--espace-sm) var(--espace-md); border-radius: var(--rayon-md); font-weight: 600; white-space: nowrap; }
+.bouton-envoyer:hover:not(:disabled) { background: #c73652; }
+.status-bar { display: flex; align-items: center; gap: var(--espace-md); padding: 4px var(--espace-md); background: var(--couleur-fond-secondaire); border-top: 1px solid var(--couleur-bordure); font-size: 11px; color: var(--couleur-texte-secondaire); }
+.status-item { display: flex; align-items: center; gap: 4px; } .status-item--droite { margin-left: auto; }
+.status-indicateur { width: 8px; height: 8px; border-radius: 50%; }
+.status-indicateur--actif { background: #4caf50; } .status-indicateur--inactif { background: #f44336; } .status-indicateur--inconnu { background: #ff9800; }
+.voice-button-zone { position: relative; }
+.voice-button { background: var(--couleur-fond-tertiaire); color: var(--couleur-texte); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.voice-button--actif { background: var(--couleur-accent); animation: pulse 1s infinite; } .voice-button--indisponible { opacity: 0.3; }
+.voice-erreur { position: absolute; bottom: 100%; left: 0; background: #f44336; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; white-space: nowrap; margin-bottom: 4px; }
+@keyframes pulse { 0%,100%{opacity:1}50%{opacity:.6} }
+.modal-fond { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+.modal-contenu { background: var(--couleur-fond-secondaire); border: 1px solid var(--couleur-bordure); border-radius: var(--rayon-md); width: 400px; max-width: 90%; }
+.modal-entete { display: flex; align-items: center; justify-content: space-between; padding: var(--espace-md); border-bottom: 1px solid var(--couleur-bordure); }
+.modal-entete h2 { font-size: 16px; font-weight: 600; } .bouton-fermer { background: transparent; color: var(--couleur-texte-secondaire); font-size: 20px; width: 28px; height: 28px; border-radius: 50%; }
+.modal-corps { padding: var(--espace-md); display: flex; flex-direction: column; gap: var(--espace-md); }
+.champ-formulaire { display: flex; flex-direction: column; gap: 4px; } .champ-formulaire label { font-size: 12px; color: var(--couleur-texte-secondaire); }
+.champ-formulaire select { padding: var(--espace-sm); border-radius: var(--rayon-sm); }
+.modal-pied { display: flex; justify-content: flex-end; gap: var(--espace-sm); padding: var(--espace-md); border-top: 1px solid var(--couleur-bordure); }
+.bouton-secondaire { background: transparent; color: var(--couleur-texte-secondaire); padding: var(--espace-sm) var(--espace-md); border-radius: var(--rayon-sm); border: 1px solid var(--couleur-bordure); }
+.bouton-principal { background: var(--couleur-accent); color: white; padding: var(--espace-sm) var(--espace-md); border-radius: var(--rayon-sm); font-weight: 600; }
+.points-suspension { display: flex; gap: 4px; align-items: center; padding: 4px 0; }
+.points-suspension span { width: 6px; height: 6px; background: var(--couleur-texte-secondaire); border-radius: 50%; animation: bounce 1.2s infinite; }
+.points-suspension span:nth-child(2){animation-delay:.2s} .points-suspension span:nth-child(3){animation-delay:.4s}
+@keyframes bounce { 0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)} }
