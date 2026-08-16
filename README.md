@@ -1,109 +1,94 @@
 # Gideonne_1
 
-Gideonne est une IA conversationnelle modulaire, construite en Python. Ce depot contient la version 1 du projet : une base de code propre, extensible et prete pour l'evolution vers des capacites avancees (memoire, outils externes, multi-agents).
+> Assistant IA local, modulaire et multilingue — propulsé par Rust, Tauri v2 et React 18.
 
-## Structure du projet
+[![Licence MIT](https://img.shields.io/badge/licence-MIT-blue.svg)](LICENSE)
+[![Rust](https://img.shields.io/badge/rust-2021_edition-orange.svg)](https://www.rust-lang.org)
+[![Tauri](https://img.shields.io/badge/tauri-v2-purple.svg)](https://tauri.app)
+[![React](https://img.shields.io/badge/react-18-61DAFB.svg)](https://reactjs.org)
 
-```
-Gideonne_1/
-├── gideonne/                # Package principal
-│   ├── __init__.py
-│   ├── core/                # Moteur de l'IA
-│   │   ├── __init__.py
-│   │   ├── agent.py         # Agent principal Gideonne
-│   │   ├── memory.py        # Gestion de la memoire conversationnelle
-│   │   └── prompt.py        # Construction des prompts systeme
-│   ├── models/              # Abstraction des modeles LLM
-│   │   ├── __init__.py
-│   │   ├── base.py          # Interface abstraite
-│   │   └── openai_model.py  # Implementation OpenAI / compatible
-│   ├── tools/               # Outils utilisables par l'agent
-│   │   ├── __init__.py
-│   │   ├── registry.py      # Registre des outils
-│   │   └── base_tool.py     # Classe de base pour un outil
-│   └── utils/               # Utilitaires transversaux
-│       ├── __init__.py
-│       ├── config.py        # Chargement de la configuration
-│       └── logger.py        # Logging structure
-├── tests/                   # Tests unitaires et d'integration
-│   ├── __init__.py
-│   ├── test_agent.py
-│   ├── test_memory.py
-│   └── test_tools.py
-├── scripts/
-│   └── run.py               # Point d'entree CLI
-├── .env.example             # Variables d'environnement requises
-├── .gitignore
-├── pyproject.toml           # Configuration du projet (PEP 517/518)
-├── requirements.txt
-└── README.md
-```
+---
+
+## Présentation
+
+Gideonne_1 est un assistant IA personnel fonctionnant **entièrement en local**, sans dépendance cloud. Il s'appuie sur Ollama pour l'inférence LLM et intègre des capacités de vision (YOLO/OpenCV), reconnaissance et synthèse vocale (Whisper / Piper TTS).
+
+### Caractéristiques clés
+
+- **100 % local** : aucune donnée envoyée vers des serveurs tiers
+- **Multilingue** : français, anglais, espagnol, mooré, gurunsi, latin
+- **Modulaire** : architecture en plugins, chaque capacité est indépendante
+- **Sécurisé** : chiffrement AES-256-GCM, gestion fine des permissions
+- **Extensible** : système de plugins Rust
+
+---
+
+## Prérequis
+
+| Outil | Version minimale |
+|-------|------------------|
+| Rust  | 1.75+            |
+| Node.js | 20+            |
+| npm   | 10+              |
+| Tauri CLI | 2.0+         |
+| Ollama | 0.1.30+        |
+
+---
 
 ## Installation
 
 ```bash
-# Cloner le depot
 git clone https://github.com/NATH-hub-creator/Gideonne_1.git
 cd Gideonne_1
-
-# Creer un environnement virtuel
-python3 -m venv .venv
-source .venv/bin/activate  # Linux/macOS
-# .venv\Scripts\activate   # Windows
-
-# Installer les dependances
-pip install -r requirements.txt
-
-# Configurer les variables d'environnement
-cp .env.example .env
-# Editer .env et renseigner vos cles API
+npm install
+ollama serve  # Dans un terminal séparé
+ollama pull llama3
+npm run tauri dev
 ```
 
-## Lancement
-
-```bash
-python scripts/run.py
-```
-
-## Configuration
-
-Toutes les options sont definies dans `.env` (voir `.env.example`). Les cles importantes :
-
-| Variable | Description | Valeur par defaut |
-|---|---|---|
-| `OPENAI_API_KEY` | Cle API OpenAI ou compatible | obligatoire |
-| `OPENAI_BASE_URL` | URL de base du LLM | `https://api.openai.com/v1` |
-| `GIDEONNE_MODEL` | Modele LLM a utiliser | `gpt-4o-mini` |
-| `GIDEONNE_MAX_TOKENS` | Tokens max par reponse | `2048` |
-| `GIDEONNE_MEMORY_SIZE` | Nombre de tours en memoire | `20` |
-| `LOG_LEVEL` | Niveau de logging | `INFO` |
+---
 
 ## Architecture
 
-Gideonne suit une architecture en couches :
-
-1. **Agent** (`core/agent.py`) : orchestre le cycle perception -> raisonnement -> action.
-2. **Memory** (`core/memory.py`) : maintient le contexte conversationnel avec une fenetre glissante.
-3. **Model** (`models/`) : abstraction du LLM, facilement remplacable (OpenAI, Anthropic, local).
-4. **Tools** (`tools/`) : outils enregistres dynamiquement, appeles par l'agent selon le besoin.
-
-## Tests
-
-```bash
-pip install pytest
-pytest tests/ -v
 ```
+Gideonne_1/
+├── src-tauri/          # Backend Rust (Tauri v2)
+│   └── src/
+│       ├── commands/   # Commandes exposées au frontend
+│       ├── core/       # Mémoire, plugins, config, journaux
+│       └── i18n/       # Internationalisation backend
+├── src/                # Frontend React + TypeScript
+│   ├── components/
+│   ├── hooks/
+│   ├── stores/
+│   └── i18n/           # 6 langues
+├── docs/               # Documentation technique
+└── tests/              # Tests unitaires et d'intégration
+```
+
+## Modules
+
+| Module | Description | Statut |
+|--------|-------------|--------|
+| AI (Ollama) | Inférence LLM locale | Fonctionnel |
+| Mémoire (SQLite) | Persistance conversations | Fonctionnel |
+| Système | Commandes shell | Fonctionnel |
+| Filesystem | CRUD fichiers/dossiers | Fonctionnel |
+| Réseau | Scan Wi-Fi, interfaces | Fonctionnel |
+| Vision | YOLO, OCR, caméras | Stub (v0.3.0) |
+| Voix | Whisper STT, Piper TTS | Stub (v0.2.0) |
+| Communication | Email, WhatsApp | Stub (v0.4.0) |
+| Sécurité | AES-256-GCM | Fonctionnel |
+| Plugins | Système d'extension | Fonctionnel |
+| i18n | 6 langues | Fonctionnel |
 
 ## Roadmap
 
-- [x] Architecture de base agent / memoire / modele
-- [x] Registre d'outils extensible
-- [ ] Integration d'outils concrets (recherche web, calendrier, fichiers)
-- [ ] Support multi-modeles (Anthropic Claude, Mistral, modele local)
-- [ ] Interface web (FastAPI + React)
-- [ ] Memoire persistante (base vectorielle)
-- [ ] Mode multi-agents
+- [ ] v0.2.0 : Intégration réelle Whisper STT
+- [ ] v0.3.0 : Vision YOLO avec OpenCV
+- [ ] v0.4.0 : Communication email/WhatsApp
+- [ ] v1.0.0 : Version stable complète
 
 ## Licence
 
-MIT — voir `LICENSE` pour le detail.
+MIT © 2026 Nathanael (NATH-hub-creator)

@@ -1,0 +1,22 @@
+# ============================================================
+# Cargo.toml — Workspace Rust Gideonne_1
+# Définit le workspace et les dépendances partagées
+# ============================================================
+
+[workspace]
+members = ["src-tauri"]
+resolver = "2"
+
+[workspace.dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tokio = { version = "1.0", features = ["full"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+rusqlite = { version = "0.31", features = ["bundled"] }
+aes-gcm = "0.10"
+rand = "0.8"
+reqwest = { version = "0.12", features = ["json", "stream"] }
+anyhow = "1.0"
+thiserror = "1.0"
+chrono = { version = "0.4", features = ["serde"] }

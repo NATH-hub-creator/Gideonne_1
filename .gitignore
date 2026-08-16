@@ -1,39 +1,65 @@
-# Environnements virtuels
-.venv/
-venv/
-env/
+# ============================================================
+# .gitignore — Gideonne_1
+# Rust + Node + Tauri + Modèles IA
+# ============================================================
 
-# Variables d'environnement (ne jamais commiter)
-.env
+# --- Rust ---
+/target/
+src-tauri/target/
+**/*.rs.bk
+Cargo.lock
 
-# Python
-__pycache__/
-*.py[cod]
-*.pyo
-*.pyd
-*.so
-*.egg
-*.egg-info/
+# --- Node / npm ---
+node_modules/
 dist/
-build/
-.eggs/
+.npm/
 
-# Tests et couverture
-.pytest_cache/
-.coverage
-htmlcov/
-.tox/
+# --- Tauri ---
+src-tauri/WixTools/
+*.AppImage
+*.deb
+*.dmg
+*.exe
+*.msi
+*.rpm
+*.app
+*.tar.gz
 
-# IDE
-.idea/
+# --- Modèles IA (Ollama, Whisper, YOLO) ---
+models/
+*.gguf
+*.bin
+*.pt
+*.onnx
+*.pth
+
+# --- Éditeurs ---
 .vscode/
+.idea/
 *.swp
 *.swo
+*~
 
-# Systeme
+# --- Systèmes d'exploitation ---
 .DS_Store
 Thumbs.db
+desktop.ini
 
-# Logs
-logs/
+# --- Journaux ---
 *.log
+logs/
+
+# --- Variables d'environnement ---
+.env
+.env.local
+.env.*.local
+
+# --- Base de données locale ---
+*.db
+*.sqlite
+*.sqlite3
+
+# --- Build et cache ---
+.cache/
+build/
+out/
