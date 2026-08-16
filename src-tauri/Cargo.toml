@@ -1,0 +1,39 @@
+# src-tauri/Cargo.toml — Crate principale Tauri / Gideonne
+[package]
+name = "gideonne"
+version = "0.1.0"
+edition = "2021"
+authors = ["Nathanael <yiyenathanael@gmail.com>"]
+description = "Assistant IA local, modulaire et multilingue"
+license = "MIT"
+
+[lib]
+name = "gideonne_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2.0", features = [] }
+
+[dependencies]
+tauri          = { version = "2.0", features = ["devtools"] }
+tauri-plugin-shell = "2.0"
+tauri-plugin-fs    = "2.0"
+tauri-plugin-dialog = "2.0"
+serde      = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tokio = { version = "1.0", features = ["full"] }
+reqwest = { version = "0.12", features = ["json", "stream"] }
+rusqlite = { version = "0.31", features = ["bundled"] }
+aes-gcm = "0.10"
+rand = "0.8"
+tracing            = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+anyhow    = "1.0"
+thiserror = "1.0"
+chrono = { version = "0.4", features = ["serde"] }
+uuid = { version = "1.0", features = ["v4"] }
+hex = "0.4"
+
+[features]
+default = ["custom-protocol"]
+custom-protocol = ["tauri/custom-protocol"]
