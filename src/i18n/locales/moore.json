@@ -1,0 +1,10 @@
+{
+  "accueil": { "titre": "Ne y'windame, mam yuurr la Gideonne", "description": "F sore-ramb IA ning yika n tar gom." },
+  "role": { "utilisateur": "Fo", "assistant": "Gideonne" },
+  "saisie": { "placeholder": "Gulsd f mesaaj... (Enter tond)", "envoyer": "Tond" },
+  "sidebar": { "label": "Zamsg", "nouvelleConversation": "Yel-beed-paagda", "conversations": "Yel-beed-ramba", "aucuneConversation": "Yel-beed-deed", "parametres": "Yaadb" },
+  "status": { "verification": "Gome...", "ollama": { "actif": "Ollama tara", "inactif": "Ollama pa tar" }, "modele": "Modeel", "aucunModele": "Deed", "langue": "Koam" },
+  "voix": { "demarrer": "Koeem paamd", "ecoute": "Kelgde...", "indisponible": "Koeem pa tar (v0.2.0)" },
+  "parametres": { "titre": "Yaadb", "modeleIA": "IA Modeel (Ollama)", "aucunModele": "Modeel deed", "langue": "Interface koam" },
+  "commun": { "fermer": "Maand", "annuler": "Bas", "sauvegarder": "Gund" }
+}

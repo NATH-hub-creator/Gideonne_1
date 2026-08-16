@@ -1,0 +1,10 @@
+{
+  "accueil": { "titre": "Ya kaa, mam yi Gideonne", "description": "A IA ye sore-ramb. Gom yaa kaa teega." },
+  "role": { "utilisateur": "Fo", "assistant": "Gideonne" },
+  "saisie": { "placeholder": "Guls mesaaj... (Enter teeg)", "envoyer": "Teeg" },
+  "sidebar": { "label": "Zamsg", "nouvelleConversation": "Yel-beed-paalg", "conversations": "Yel-beed", "aucuneConversation": "Yel-beed-deed", "parametres": "Naoor" },
+  "status": { "verification": "Gome...", "ollama": { "actif": "Ollama tara", "inactif": "Ollama pa tar" }, "modele": "Modeel", "aucunModele": "Deed", "langue": "Koam" },
+  "voix": { "demarrer": "Koeem paamd", "ecoute": "Kelgde...", "indisponible": "Koeem pa tar (v0.2.0)" },
+  "parametres": { "titre": "Naoor", "modeleIA": "IA Modeel (Ollama)", "aucunModele": "Modeel pa tar", "langue": "Interface koam" },
+  "commun": { "fermer": "Maand", "annuler": "Bas", "sauvegarder": "Gund" }
+}

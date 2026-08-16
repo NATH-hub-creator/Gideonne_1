@@ -1,0 +1,10 @@
+{
+  "accueil": { "titre": "Hello, I am Gideonne", "description": "Your local AI assistant. Ask me a question to get started." },
+  "role": { "utilisateur": "You", "assistant": "Gideonne" },
+  "saisie": { "placeholder": "Type your message\u2026 (Enter to send, Shift+Enter for new line)", "envoyer": "Send" },
+  "sidebar": { "label": "Navigation", "nouvelleConversation": "New conversation", "conversations": "Conversations", "aucuneConversation": "No conversations", "parametres": "Settings" },
+  "status": { "verification": "Checking\u2026", "ollama": { "actif": "Ollama active", "inactif": "Ollama inactive" }, "modele": "Model", "aucunModele": "None", "langue": "Language" },
+  "voix": { "demarrer": "Activate voice", "ecoute": "Listening\u2026", "indisponible": "Voice module unavailable (v0.2.0)" },
+  "parametres": { "titre": "Settings", "modeleIA": "AI Model (Ollama)", "aucunModele": "No model available", "langue": "Interface language" },
+  "commun": { "fermer": "Close", "annuler": "Cancel", "sauvegarder": "Save" }
+}

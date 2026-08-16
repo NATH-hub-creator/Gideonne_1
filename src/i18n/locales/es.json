@@ -1,0 +1,10 @@
+{
+  "accueil": { "titre": "Hola, soy Gideonne", "description": "Tu asistente IA local. H\u00e1zme una pregunta para empezar." },
+  "role": { "utilisateur": "T\u00fa", "assistant": "Gideonne" },
+  "saisie": { "placeholder": "Escribe tu mensaje\u2026 (Intro para enviar)", "envoyer": "Enviar" },
+  "sidebar": { "label": "Navegaci\u00f3n", "nouvelleConversation": "Nueva conversaci\u00f3n", "conversations": "Conversaciones", "aucuneConversation": "Sin conversaciones", "parametres": "Ajustes" },
+  "status": { "verification": "Verificando\u2026", "ollama": { "actif": "Ollama activo", "inactif": "Ollama inactivo" }, "modele": "Modelo", "aucunModele": "Ninguno", "langue": "Idioma" },
+  "voix": { "demarrer": "Activar voz", "ecoute": "Escuchando\u2026", "indisponible": "M\u00f3dulo de voz no disponible (v0.2.0)" },
+  "parametres": { "titre": "Ajustes", "modeleIA": "Modelo IA (Ollama)", "aucunModele": "Ning\u00fan modelo", "langue": "Idioma de la interfaz" },
+  "commun": { "fermer": "Cerrar", "annuler": "Cancelar", "sauvegarder": "Guardar" }
+}

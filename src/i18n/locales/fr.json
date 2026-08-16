@@ -1,0 +1,35 @@
+{
+  "accueil": {
+    "titre": "Bonjour, je suis Gideonne",
+    "description": "Votre assistant IA local. Posez-moi une question pour commencer."
+  },
+  "role": { "utilisateur": "Vous", "assistant": "Gideonne" },
+  "saisie": {
+    "placeholder": "\u00c9crivez votre message\u2026 (Entr\u00e9e pour envoyer, Maj+Entr\u00e9e pour nouvelle ligne)",
+    "envoyer": "Envoyer"
+  },
+  "sidebar": {
+    "label": "Navigation",
+    "nouvelleConversation": "Nouvelle conversation",
+    "conversations": "Conversations",
+    "aucuneConversation": "Aucune conversation",
+    "parametres": "Param\u00e8tres"
+  },
+  "status": {
+    "verification": "V\u00e9rification\u2026",
+    "ollama": { "actif": "Ollama actif", "inactif": "Ollama inactif" },
+    "modele": "Mod\u00e8le", "aucunModele": "Aucun", "langue": "Langue"
+  },
+  "voix": {
+    "demarrer": "Activer la voix",
+    "ecoute": "\u00c9coute en cours\u2026",
+    "indisponible": "Module voix non disponible (v0.2.0)"
+  },
+  "parametres": {
+    "titre": "Param\u00e8tres",
+    "modeleIA": "Mod\u00e8le IA (Ollama)",
+    "aucunModele": "Aucun mod\u00e8le disponible",
+    "langue": "Langue de l'interface"
+  },
+  "commun": { "fermer": "Fermer", "annuler": "Annuler", "sauvegarder": "Sauvegarder" }
+}

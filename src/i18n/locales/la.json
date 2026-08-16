@@ -1,0 +1,10 @@
+{
+  "accueil": { "titre": "Salve, ego sum Gideonne", "description": "Auxiliator tuus IA localis. Interroga me ut incipiamus." },
+  "role": { "utilisateur": "Tu", "assistant": "Gideonne" },
+  "saisie": { "placeholder": "Scribe nuntium tuum... (Enter ad mittendum)", "envoyer": "Mitte" },
+  "sidebar": { "label": "Navigatio", "nouvelleConversation": "Colloquium novum", "conversations": "Colloquia", "aucuneConversation": "Nulla colloquia", "parametres": "Optiones" },
+  "status": { "verification": "Verificans...", "ollama": { "actif": "Ollama activum", "inactif": "Ollama inactivum" }, "modele": "Exemplar", "aucunModele": "Nullum", "langue": "Lingua" },
+  "voix": { "demarrer": "Vocem activare", "ecoute": "Auscultans...", "indisponible": "Modulus vocis non disponibilis (v0.2.0)" },
+  "parametres": { "titre": "Optiones", "modeleIA": "Exemplar IA (Ollama)", "aucunModele": "Nullum exemplar", "langue": "Lingua interfaciei" },
+  "commun": { "fermer": "Claude", "annuler": "Cancella", "sauvegarder": "Serva" }
+}
