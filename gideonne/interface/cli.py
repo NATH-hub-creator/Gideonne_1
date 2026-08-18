@@ -17,6 +17,7 @@ import sys
 from typing import Optional
 
 from gideonne.core.agent import GideonneAgent
+print("BIENVENU A L'INTERFACE DE GIDEONNE")
 
 logger = logging.getLogger(__name__)
 
