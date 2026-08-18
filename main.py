@@ -5,17 +5,23 @@ Orchestre l'initialisation de tous les modules et lance
 l'interface choisie (CLI par défaut, API avec --mode api).
 
 Usage :
-    python main.py                     # Mode CLI interactif
+    python main.py                     # Mode CLI interactif (Ollama par défaut)
     python main.py --mode cli          # Idem
     python main.py --mode api          # Serveur REST (nécessite FastAPI + uvicorn)
     python main.py --mode api --port 8080  # Serveur sur un port spécifique
     python main.py --session ma_session    # Reprendre une session existante
 
 Variables d'environnement importantes :
-    OPENAI_API_KEY     — Clé API OpenAI (ou fournisseur compatible)
-    GIDEONNE_MODEL     — Modèle à utiliser (défaut : gpt-4o-mini)
-    GIDEONNE_BASE_URL  — URL de base de l'API (pour Ollama, LMStudio, etc.)
-    GIDEONNE_LOG_LEVEL — Niveau de log (défaut : INFO)
+    MODEL_PROVIDER       — "ollama" (défaut) ou "openai"
+    OLLAMA_BASE_URL      — URL Ollama (défaut : http://localhost:11434)
+    OPENAI_API_KEY       — Clé API OpenAI (requis uniquement si MODEL_PROVIDER=openai)
+    GIDEONNE_MODEL       — Modèle à utiliser (défaut : llama3)
+    GIDEONNE_LOG_LEVEL   — Niveau de log (défaut : INFO)
+
+Pour démarrer rapidement avec Ollama :
+    1. Installez Ollama : https://ollama.com
+    2. Téléchargez le modèle : ollama pull llama3
+    3. Lancez : python main.py
 """
 
 from __future__ import annotations
@@ -44,11 +50,14 @@ def _construire_agent():
     """
     Instancie et configure l'agent Gideonne avec tous ses modules.
 
+    Le moteur LLM est sélectionné automatiquement selon MODEL_PROVIDER :
+        - "ollama" (défaut) : OllamaModel — aucune clé API requise
+        - "openai"          : OpenAIModel — nécessite OPENAI_API_KEY
+
     Returns:
         Tuple (agent, store) prêts à l'emploi.
     """
     from gideonne.utils.config import Config
-    from gideonne.models.openai_model import OpenAIModel
     from gideonne.core.agent import GideonneAgent
     from gideonne.tools.registry import ToolRegistry
     from gideonne.tools.calculator import CalculatorTool
@@ -60,7 +69,11 @@ def _construire_agent():
     # 1. Configuration depuis les variables d'environnement
     config = Config.from_env()
     logger = logging.getLogger(__name__)
-    logger.info("Configuration chargée | modèle=%s", config.model)
+    logger.info(
+        "Configuration chargée | provider=%s | modèle=%s",
+        config.model_provider,
+        config.model,
+    )
 
     # 2. Registre des outils
     registry = ToolRegistry()
@@ -70,8 +83,9 @@ def _construire_agent():
     registry.register(KeywordTool())
     logger.info("Outils enregistrés : %s", registry.tool_names)
 
-    # 3. Backend LLM
-    model = OpenAIModel(config)
+    # 3. Sélection du backend LLM selon MODEL_PROVIDER
+    model = _instancier_modele(config)
+    logger.info("Backend LLM actif : %s", type(model).__name__)
 
     # 4. Agent principal
     agent = GideonneAgent(config=config, model=model, tool_registry=registry)
@@ -80,6 +94,56 @@ def _construire_agent():
     backend = JSONBackend(storage_dir=config.storage_dir)
 
     return agent, backend
+
+
+def _instancier_modele(config):
+    """
+    Choisit et instancie le backend LLM approprié selon config.model_provider.
+
+    Args:
+        config: Instance de Config déjà peuplée depuis l'environnement.
+
+    Returns:
+        Une instance de BaseModel (OllamaModel ou OpenAIModel).
+
+    Raises:
+        SystemExit: Si MODEL_PROVIDER est inconnu ou si OpenAI est sélectionné
+                    sans clé API configurée.
+    """
+    logger = logging.getLogger(__name__)
+
+    if config.model_provider == "ollama":
+        from gideonne.models.ollama_model import OllamaModel
+        logger.info(
+            "Moteur Ollama sélectionné | url=%s | modèle=%s",
+            config.ollama_base_url,
+            config.model,
+        )
+        return OllamaModel(config)
+
+    elif config.model_provider == "openai":
+        from gideonne.models.openai_model import OpenAIModel
+
+        if not config.openai_api_key:
+            logger.error(
+                "MODEL_PROVIDER=openai mais OPENAI_API_KEY n'est pas défini. "
+                "Définissez OPENAI_API_KEY dans .env ou passez MODEL_PROVIDER=ollama."
+            )
+            sys.exit(1)
+
+        logger.info(
+            "Moteur OpenAI sélectionné | base_url=%s | modèle=%s",
+            config.openai_base_url,
+            config.model,
+        )
+        return OpenAIModel(config)
+
+    else:
+        logger.error(
+            "MODEL_PROVIDER='%s' non reconnu. Valeurs valides : ollama, openai.",
+            config.model_provider,
+        )
+        sys.exit(1)
 
 
 def _lancer_cli(agent, backend, session_id: str) -> None:
@@ -124,84 +188,71 @@ def _lancer_api(agent, port: int, host: str) -> None:
 
     Args:
         agent: Instance de GideonneAgent.
-        port: Port d'écoute.
-        host: Adresse d'écoute.
+        port: Port d'écoute du serveur.
+        host: Interface réseau d'écoute.
     """
     try:
         import uvicorn
     except ImportError:
-        print(
-            "[ERREUR] uvicorn n'est pas installé. "
-            "Lancez : pip install fastapi uvicorn",
-            file=sys.stderr,
+        logging.getLogger(__name__).error(
+            "uvicorn n'est pas installé. Lancez : pip install uvicorn fastapi"
         )
         sys.exit(1)
 
-    from gideonne.interface.api import APIInterface
+    from gideonne.interface.api import build_app
 
-    interface = APIInterface(agent=agent)
+    app = build_app(agent=agent)
     logger = logging.getLogger(__name__)
-    logger.info("Démarrage du serveur Gideonne sur %s:%d", host, port)
-
-    uvicorn.run(interface.app, host=host, port=port)
+    logger.info("Serveur API démarré sur %s:%d", host, port)
+    uvicorn.run(app, host=host, port=port)
 
 
 def main() -> None:
     """
-    Point d'entrée principal : analyse les arguments CLI et lance le mode demandé.
+    Point d'entrée principal : parse les arguments et délègue à l'interface choisie.
     """
-    # --- Analyse des arguments ---
     parser = argparse.ArgumentParser(
-        description="Gideonne — IA conversationnelle locale pour NAG NAT Industries",
+        description="Gideonne — assistant IA local (Ollama/llama3 par défaut)",
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument(
         "--mode",
         choices=["cli", "api"],
         default="cli",
-        help="Mode de lancement : 'cli' (terminal) ou 'api' (serveur REST). Défaut : cli.",
-    )
-    parser.add_argument(
-        "--session",
-        default="default",
-        help="Identifiant de session à reprendre ou créer. Défaut : 'default'.",
-    )
-    parser.add_argument(
-        "--host",
-        default="127.0.0.1",
-        help="Adresse d'écoute du serveur API. Défaut : 127.0.0.1.",
+        help="Interface à lancer : cli (défaut) ou api (serveur REST).",
     )
     parser.add_argument(
         "--port",
         type=int,
         default=8000,
-        help="Port d'écoute du serveur API. Défaut : 8000.",
+        help="Port du serveur API (défaut : 8000, mode api uniquement).",
     )
     parser.add_argument(
-        "--log-level",
-        default=None,
-        help="Niveau de log (DEBUG, INFO, WARNING, ERROR). Prioritaire sur GIDEONNE_LOG_LEVEL.",
+        "--host",
+        default="127.0.0.1",
+        help="Interface réseau du serveur API (défaut : 127.0.0.1).",
     )
+    parser.add_argument(
+        "--session",
+        default="default",
+        help="Identifiant de session (défaut : 'default').",
+    )
+
     args = parser.parse_args()
 
-    # --- Initialisation du logging ---
-    # On charge temporairement la config pour récupérer le niveau de log par défaut
+    # Initialisation du logging avant tout
     from gideonne.utils.config import Config
-    config_temp = Config.from_env()
-    niveau_log = args.log_level or config_temp.log_level
-    _configurer_logging(niveau_log)
+    config_base = Config.from_env()
+    _configurer_logging(config_base.log_level)
 
-    logger = logging.getLogger(__name__)
-    logger.info("=== Démarrage de Gideonne ===")
-
-    # --- Construction de l'agent ---
+    # Construction de l'agent
     agent, backend = _construire_agent()
 
-    # --- Lancement du mode demandé ---
+    # Lancement de l'interface choisie
     if args.mode == "api":
-        _lancer_api(agent=agent, port=args.port, host=args.host)
+        _lancer_api(agent, port=args.port, host=args.host)
     else:
-        _lancer_cli(agent=agent, backend=backend, session_id=args.session)
+        _lancer_cli(agent, backend, session_id=args.session)
 
 
 if __name__ == "__main__":
